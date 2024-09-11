@@ -24,7 +24,16 @@ public class PlayerManager : MonoBehaviour
     {
         _inputList.Add(playerInput);
         playerInput.SwitchCurrentControlScheme("Controller",Gamepad.all[_controllerIndex]);
+        playerInput.gameObject.tag = "Player" + _controllerIndex;
         _controllerIndex++;
+
+        if (_controllerIndex >= 2)
+        {
+            Player firstPlayer = _inputList[0].GetComponent<Player>();
+            Player secondPlayer = _inputList[1].GetComponent<Player>();
+            firstPlayer.OtherPlayer = secondPlayer;
+            secondPlayer.OtherPlayer = firstPlayer;
+        }
     }
 
     void Update()
