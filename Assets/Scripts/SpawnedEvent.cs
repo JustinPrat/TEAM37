@@ -15,7 +15,6 @@ public abstract class SpawnedEvent : MonoBehaviour
         gameObject.SetActive(true);
         zoneRecordCollider.gameObject.SetActive(true);
         zoneRecordCollider.transform.localScale = new Vector2(zoneSize, zoneRecordCollider.transform.localScale.y);
-        zoneRecordCollider.size = new Vector2(zoneSize, zoneRecordCollider.transform.localScale.y);
     }
     public abstract void UpdateEvent(BoxCollider2D zoneRecordCollider);
     public virtual void ExitEvent(BoxCollider2D zoneRecordCollider)
