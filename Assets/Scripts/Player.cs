@@ -27,7 +27,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float _playerCollisionDelay;
     [SerializeField] private float _obstacleCollisionDelay;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private SpriteRenderer _loupiote;
+    [SerializeField] private Collider2D _circleCollider;
+    [SerializeField] private Collider2D _boxCollider;
 
     [SerializeField] private int _baseScoreGain;
     [SerializeField] private int _timeBeforeUpgrade;
@@ -135,7 +136,6 @@ public class Player : MonoBehaviour
             _spriteRenderer.color = baseColor;
 
             Vector2 force = transform.position - otherPosition;
-            //_rigidbody.AddForce(force.normalized * _repulseAmountAttack, ForceMode2D.Impulse);
             _rigidbody.velocity += force.normalized * _repulseAmountAttack;
             StartCoroutine(CooldownCoroutine(_hitDelay, OnHitCooldownFinish));
         }
@@ -176,6 +176,8 @@ public class Player : MonoBehaviour
             _movementState = MovementState.JUMP;
             _beforeJumpHeigth = transform.position.y;
             _rigidbody.velocity += new Vector2(0, _jumpAmount);
+            _circleCollider.enabled = false;
+            _boxCollider.enabled = false;
         }
     }
 
@@ -225,6 +227,8 @@ public class Player : MonoBehaviour
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
         _movementState = MovementState.DRIVE;
+        _circleCollider.enabled = true;
+        _boxCollider.enabled = true;
     }
 
     void FixedUpdate()

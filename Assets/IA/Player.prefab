@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 8008327375200459477}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.8771, y: -1.9232, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.2463, y: 1.1864, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -145,7 +145,8 @@ MonoBehaviour:
   _playerCollisionDelay: 0.1
   _obstacleCollisionDelay: 2
   _spriteRenderer: {fileID: 1783201004478433453}
-  _loupiote: {fileID: 0}
+  _circleCollider: {fileID: 9047867848956475253}
+  _boxCollider: {fileID: -3655434455826096307}
   _baseScoreGain: 1
   _timeBeforeUpgrade: 1
   _playerInput: {fileID: -3425149106075027641}
