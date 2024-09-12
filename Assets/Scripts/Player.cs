@@ -96,7 +96,7 @@ public class Player : MonoBehaviour
             _canBeHit = false;
             _canAttack = false;
             Vector2 force = transform.position - collision.transform.position;
-            _rigidbody.AddForce(force.normalized * _repulseAmountObstacleCollision, ForceMode2D.Impulse);
+            _rigidbody.AddForce(force.normalized * _repulseAmountPlayerCollision, ForceMode2D.Impulse);
             _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
             StartCoroutine(CooldownCoroutine(_playerCollisionDelay, OnHitCooldownFinish));
         }
