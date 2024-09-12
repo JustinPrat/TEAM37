@@ -15,9 +15,11 @@ public class Player : MonoBehaviour
     [SerializeField] private float _jumpAmount;
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _airControl;
-    [SerializeField] private float _repulseAmount;
+    [SerializeField] private float _repulseAmountAttack;
+    [SerializeField] private float _repulseAmountCollision;
     [SerializeField] private float _attackDelay;
     [SerializeField] private float _hitDelay;
+    [SerializeField] private float _collisionDelay;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     public Player OtherPlayer { get; set; }
 
@@ -66,13 +68,27 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collision.tag != tag)
+        if (collider.tag != tag)
         {
             _otherInRange = false;
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag != tag && _movementState != MovementState.JUMP && _canBeHit == true) 
+        {
+            _canBeHit = false;
+            _canAttack = false;
+            Vector2 force = transform.position - collision.transform.position;
+            _rigidbody.AddForce(force.normalized * _repulseAmountCollision, ForceMode2D.Impulse);
+            _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
+            StartCoroutine(CooldownCoroutine(_collisionDelay, OnHitCooldownFinish));
+        }
+    }
+
 
     public void HitPlayer (Vector3 otherPosition)
     {
@@ -81,7 +97,7 @@ public class Player : MonoBehaviour
             _canBeHit = false;
             _canAttack = false;
             Vector2 force = transform.position - otherPosition;
-            _rigidbody.AddForce(force.normalized * _repulseAmount, ForceMode2D.Impulse);
+            _rigidbody.AddForce(force.normalized * _repulseAmountAttack, ForceMode2D.Impulse);
             _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
             StartCoroutine(CooldownCoroutine(_hitDelay, OnHitCooldownFinish));
         }
