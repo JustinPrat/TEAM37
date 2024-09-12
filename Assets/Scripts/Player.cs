@@ -47,7 +47,6 @@ public class Player : MonoBehaviour
         _playerInput.actions["Capture"].performed += OnCapturePerformed;
         _playerInput.actions["Capture"].canceled += OnCaptureCanceled;
         _playerInput.actions["Attack"].performed += OnAttackPerformed;
-
     }
 
 

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Player0
   - Player1
+  - Zone
   layers:
   - Default
   - TransparentFX
