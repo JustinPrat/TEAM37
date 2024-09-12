@@ -9,6 +9,7 @@ TagManager:
   - obstacle
   - Zone
   - KillWall
+  - Zone
   layers:
   - Default
   - TransparentFX
