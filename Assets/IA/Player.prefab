@@ -141,6 +141,8 @@ MonoBehaviour:
   _playerCollisionDelay: 0.1
   _obstacleCollisionDelay: 2
   _spriteRenderer: {fileID: 1783201004478433453}
+  _baseScoreGain: 1
+  _timeBeforeUpgrade: 1
   _playerInput: {fileID: -3425149106075027641}
 --- !u!114 &-3425149106075027641
 MonoBehaviour:

@@ -24,6 +24,11 @@ public class Player : MonoBehaviour
     [SerializeField] private float _playerCollisionDelay;
     [SerializeField] private float _obstacleCollisionDelay;
     [SerializeField] private SpriteRenderer _spriteRenderer;
+
+    [SerializeField] private int _baseScoreGain;
+    [SerializeField] private int _timeBeforeUpgrade;
+   
+    public TextMeshProUGUI TextMeshProUGUI { get; set; }
     public Player OtherPlayer { get; set; }
 
     private float _beforeJumpHeigth;
@@ -31,6 +36,10 @@ public class Player : MonoBehaviour
     private bool _canAttack = true;
     private bool _otherInRange;
     private bool _canBeHit = true;
+    private bool _isInZone = false;
+
+    private float _score;
+    //private float _timerScore;
 
     [SerializeField] private PlayerInput _playerInput;
 
@@ -80,12 +89,20 @@ public class Player : MonoBehaviour
             StartCoroutine(CooldownCoroutine(_obstacleCollisionDelay, OnObstacleCooldownFinish));
 
         }
+        if (collider.tag == "Zone")
+        {
+            _isInZone = true;
+        }
     }
     private void OnTriggerExit2D(Collider2D collider)
     {
         if (collider.tag != tag)
         {
             _otherInRange = false;
+        }
+        if (collider.tag == "Zone")
+        {
+            _isInZone = false;
         }
     }
 
@@ -178,7 +195,7 @@ public class Player : MonoBehaviour
         callBack?.Invoke();
     }
 
-
+    
     private void OnAttackCooldownFinish()
     {
         _canAttack = true;
@@ -222,6 +239,11 @@ public class Player : MonoBehaviour
 
             case MovementState.CAPTURE:
                 _rigidbody.AddForce(inputVelocity/2 * Time.deltaTime, ForceMode2D.Impulse);
+                if (_isInZone && _canBeHit)
+                {
+                    _score += Time.deltaTime * _baseScoreGain;
+                    TextMeshProUGUI.text = _score.ToString();
+                }
                 break;
 
             case MovementState.STUNNED:

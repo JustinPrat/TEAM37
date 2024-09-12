@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private PlayerInputManager inputManager;
+    [SerializeField] private List<TextMeshProUGUI> textList;
 
     private List<PlayerInput> _inputList = new List<PlayerInput>();
     private int _controllerIndex;
@@ -33,6 +35,9 @@ public class PlayerManager : MonoBehaviour
             Player secondPlayer = _inputList[1].GetComponent<Player>();
             firstPlayer.OtherPlayer = secondPlayer;
             secondPlayer.OtherPlayer = firstPlayer;
+
+            firstPlayer.TextMeshProUGUI = textList[0];
+            secondPlayer.TextMeshProUGUI = textList[1];
         }
     }
 
