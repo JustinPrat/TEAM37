@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _hitDelay;
     [SerializeField] private float _gravityFactor;
     [SerializeField] private float _captureSpeedFactor;
-    [SerializeField] private Transform _shadowTransform;
+    [SerializeField] private float _stunSpeedFactor;
     [SerializeField] private float _playerCollisionDelay;
     [SerializeField] private float _obstacleCollisionDelay;
     [SerializeField] private SpriteRenderer _spriteRenderer;
@@ -36,7 +36,6 @@ public class Player : MonoBehaviour
     public SpriteRenderer Loupiote { get; set; }
     public Player OtherPlayer { get; set; }
 
-    private float _beforeJumpShadowYPos;
     private float _beforeJumpHeigth;
     private bool _canAttack = true;
     private bool _otherInRange;
@@ -116,6 +115,7 @@ public class Player : MonoBehaviour
             _canBeHit = false;
             _canAttack = false;
             Vector2 force = transform.position - collision.transform.position;
+            _rigidbody.velocity = Vector2.zero;
             _rigidbody.AddForce(force.normalized * _repulseAmountPlayerCollision, ForceMode2D.Impulse);
             _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
             StartCoroutine(CooldownCoroutine(_playerCollisionDelay, OnHitCooldownFinish));
@@ -129,16 +129,18 @@ public class Player : MonoBehaviour
         {
             _canBeHit = false;
             _canAttack = false;
-            Vector2 force = transform.position - otherPosition;
-            _rigidbody.AddForce(force.normalized * _repulseAmount, ForceMode2D.Impulse);
+
             Color baseColor = _spriteRenderer.color;
             baseColor.a = 0.5f;
             _spriteRenderer.color = baseColor;
-            _rigidbody.AddForce(force.normalized * _repulseAmountAttack, ForceMode2D.Impulse);
-            _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
+
+            Vector2 force = transform.position - otherPosition;
+            //_rigidbody.AddForce(force.normalized * _repulseAmountAttack, ForceMode2D.Impulse);
+            _rigidbody.velocity += force.normalized * _repulseAmountAttack;
             StartCoroutine(CooldownCoroutine(_hitDelay, OnHitCooldownFinish));
         }
     }
+
     private void OnObstacleCooldownFinish()
     {
         _spriteRenderer.color = new Color(1, 1, 1, 1f);
@@ -173,7 +175,6 @@ public class Player : MonoBehaviour
         {
             _movementState = MovementState.JUMP;
             _beforeJumpHeigth = transform.position.y;
-            _beforeJumpShadowYPos = _shadowTransform.position.y;
             _rigidbody.velocity += new Vector2(0, _jumpAmount);
         }
     }
@@ -220,12 +221,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnLanded ()
+    private void OnLanded()
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
         _movementState = MovementState.DRIVE;
     }
-
 
     void FixedUpdate()
     {
@@ -234,12 +234,11 @@ public class Player : MonoBehaviour
         switch (_movementState)
         {
             case MovementState.DRIVE:
-                _rigidbody.MovePosition(transform.position + inputVelocity * Time.fixedDeltaTime);
+                _rigidbody.velocity += (Vector2) (inputVelocity * Time.fixedDeltaTime);
                 break;
-
+                
             case MovementState.JUMP:
                 _rigidbody.velocity += new Vector2(_movementValue.x * _airControl, -9.81f * _gravityFactor) * Time.fixedDeltaTime;
-
                 if (transform.position.y < _beforeJumpHeigth)
                 {
                     OnLanded();
@@ -247,19 +246,17 @@ public class Player : MonoBehaviour
                 break;
 
             case MovementState.CAPTURE:
-                _rigidbody.MovePosition(transform.position + inputVelocity * _captureSpeedFactor * Time.fixedDeltaTime);
-                _rigidbody.AddForce(inputVelocity/2 * Time.deltaTime, ForceMode2D.Impulse);
+                _rigidbody.velocity += (Vector2)(inputVelocity * _captureSpeedFactor * Time.fixedDeltaTime);
                 if (_isInZone && _canBeHit)
                 {
                     _score += Time.deltaTime * _baseScoreGain;
                     TextMeshProUGUI.text = _score.ToString();
                     Loupiote.color = new Color(0.9f, 0, 0, Mathf.Abs(Mathf.Sin(Time.time * 2)));
-                    
                 }
                 break;
 
             case MovementState.STUNNED:
-                _rigidbody.AddForce(inputVelocity / 3 * Time.deltaTime, ForceMode2D.Impulse);
+                _rigidbody.velocity += (Vector2)(inputVelocity * _stunSpeedFactor * Time.fixedDeltaTime);
                 break;
 
             default:

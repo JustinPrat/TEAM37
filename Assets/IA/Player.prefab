@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -130,18 +130,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 3362725353009152260}
-  _speed: {x: 6, y: 6}
-  _jumpAmount: 6
+  _speed: {x: 20, y: 20}
+  _jumpAmount: 20
   _maxSpeed: 2
-  _airControl: 0.01
+  _airControl: 30
   _repulseAmountAttack: 5
   _repulseAmountPlayerCollision: 0.8
-  _repulseAmountObstacleCollision: 0
+  _repulseAmountObstacleCollision: 2
   _attackDelay: 0.5
   _hitDelay: 1
+  _gravityFactor: 2.5
+  _captureSpeedFactor: 0.5
+  _stunSpeedFactor: 0.3
   _playerCollisionDelay: 0.1
   _obstacleCollisionDelay: 2
   _spriteRenderer: {fileID: 1783201004478433453}
+  _loupiote: {fileID: 0}
   _baseScoreGain: 1
   _timeBeforeUpgrade: 1
   _playerInput: {fileID: -3425149106075027641}
