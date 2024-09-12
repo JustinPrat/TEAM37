@@ -24,11 +24,13 @@ public class Player : MonoBehaviour
     [SerializeField] private float _playerCollisionDelay;
     [SerializeField] private float _obstacleCollisionDelay;
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private SpriteRenderer _loupiote;
 
     [SerializeField] private int _baseScoreGain;
     [SerializeField] private int _timeBeforeUpgrade;
    
     public TextMeshProUGUI TextMeshProUGUI { get; set; }
+    public SpriteRenderer Loupiote { get; set; }
     public Player OtherPlayer { get; set; }
 
     private float _beforeJumpHeigth;
@@ -39,7 +41,6 @@ public class Player : MonoBehaviour
     private bool _isInZone = false;
 
     private float _score;
-    //private float _timerScore;
 
     [SerializeField] private PlayerInput _playerInput;
 
@@ -243,6 +244,8 @@ public class Player : MonoBehaviour
                 {
                     _score += Time.deltaTime * _baseScoreGain;
                     TextMeshProUGUI.text = _score.ToString();
+                    Loupiote.color = new Color(0.9f, 0, 0, Mathf.Abs(Mathf.Sin(Time.time * 2)));
+                    
                 }
                 break;
 

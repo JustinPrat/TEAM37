@@ -7,6 +7,7 @@ TagManager:
   - Player0
   - Player1
   - obstacle
+  - Zone
   layers:
   - Default
   - TransparentFX

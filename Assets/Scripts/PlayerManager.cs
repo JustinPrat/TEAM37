@@ -1,25 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField] private PlayerInputManager inputManager;
-    [SerializeField] private List<TextMeshProUGUI> textList;
+    [SerializeField] private PlayerInputManager _inputManager;
+    [SerializeField] private List<TextMeshProUGUI> _textList;
+    [SerializeField] private List<SpriteRenderer> _loupioteList;
 
     private List<PlayerInput> _inputList = new List<PlayerInput>();
     private int _controllerIndex;
 
     void Start()
     {
-        inputManager.onPlayerJoined += InputPlayerJoined;
+        _inputManager.onPlayerJoined += InputPlayerJoined;
     }
 
     private void OnDestroy()
     {
-        inputManager.onPlayerJoined -= InputPlayerJoined;
+        _inputManager.onPlayerJoined -= InputPlayerJoined;
     }
 
     private void InputPlayerJoined(PlayerInput playerInput)
@@ -36,8 +38,11 @@ public class PlayerManager : MonoBehaviour
             firstPlayer.OtherPlayer = secondPlayer;
             secondPlayer.OtherPlayer = firstPlayer;
 
-            firstPlayer.TextMeshProUGUI = textList[0];
-            secondPlayer.TextMeshProUGUI = textList[1];
+            firstPlayer.TextMeshProUGUI = _textList[0];
+            secondPlayer.TextMeshProUGUI = _textList[1];
+
+            firstPlayer.Loupiote = _loupioteList[0];
+            secondPlayer.Loupiote = _loupioteList[1];
         }
     }
 
