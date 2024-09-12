@@ -134,10 +134,12 @@ MonoBehaviour:
   _maxSpeed: 2
   _airControl: 0.01
   _repulseAmountAttack: 5
-  _repulseAmountCollision: 0.8
-  _attackDelay: 0
+  _repulseAmountPlayerCollision: 0.8
+  _repulseAmountObstacleCollision: 0
+  _attackDelay: 0.5
   _hitDelay: 1
-  _collisionDelay: 0.1
+  _playerCollisionDelay: 0.1
+  _obstacleCollisionDelay: 2
   _spriteRenderer: {fileID: 1783201004478433453}
   _playerInput: {fileID: -3425149106075027641}
 --- !u!114 &-3425149106075027641

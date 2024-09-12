@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using TreeEditor;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -16,10 +17,12 @@ public class Player : MonoBehaviour
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _airControl;
     [SerializeField] private float _repulseAmountAttack;
-    [SerializeField] private float _repulseAmountCollision;
+    [SerializeField] private float _repulseAmountPlayerCollision;
+    [SerializeField] private float _repulseAmountObstacleCollision;
     [SerializeField] private float _attackDelay;
     [SerializeField] private float _hitDelay;
-    [SerializeField] private float _collisionDelay;
+    [SerializeField] private float _playerCollisionDelay;
+    [SerializeField] private float _obstacleCollisionDelay;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     public Player OtherPlayer { get; set; }
 
@@ -35,7 +38,8 @@ public class Player : MonoBehaviour
     {
         DRIVE,
         JUMP,
-        CAPTURE
+        CAPTURE,
+        STUNNED
     }
 
     void Start()
@@ -60,14 +64,23 @@ public class Player : MonoBehaviour
         _playerInput.actions["Attack"].performed -= OnAttackPerformed;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.tag != tag)
+       
+        if (collider.tag != tag && collider.tag != "obstacle")
         {
             _otherInRange = true;
         }
-    }
+        if (collider.tag == "obstacle" && _movementState != MovementState.JUMP && _canBeHit == true)
+        {
+            _canBeHit = false;
+            _canAttack = false;
+            _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
+            _movementState = MovementState.STUNNED;
+            StartCoroutine(CooldownCoroutine(_obstacleCollisionDelay, OnObstacleCooldownFinish));
 
+        }
+    }
     private void OnTriggerExit2D(Collider2D collider)
     {
         if (collider.tag != tag)
@@ -83,9 +96,9 @@ public class Player : MonoBehaviour
             _canBeHit = false;
             _canAttack = false;
             Vector2 force = transform.position - collision.transform.position;
-            _rigidbody.AddForce(force.normalized * _repulseAmountCollision, ForceMode2D.Impulse);
+            _rigidbody.AddForce(force.normalized * _repulseAmountObstacleCollision, ForceMode2D.Impulse);
             _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
-            StartCoroutine(CooldownCoroutine(_collisionDelay, OnHitCooldownFinish));
+            StartCoroutine(CooldownCoroutine(_playerCollisionDelay, OnHitCooldownFinish));
         }
     }
 
@@ -102,6 +115,13 @@ public class Player : MonoBehaviour
             StartCoroutine(CooldownCoroutine(_hitDelay, OnHitCooldownFinish));
         }
     }
+    private void OnObstacleCooldownFinish()
+    {
+        _spriteRenderer.color = new Color(1, 1, 1, 1f);
+        _canBeHit = true;
+        _canAttack = true;
+        _movementState = MovementState.DRIVE;
+    }
 
     private void OnHitCooldownFinish()
     {
@@ -117,8 +137,10 @@ public class Player : MonoBehaviour
 
     public void OnCaptureCanceled(InputAction.CallbackContext ctx)
     {
-        _captureValue = 0;
-        _movementState = MovementState.DRIVE;
+        if ( _movementState == MovementState.CAPTURE)
+        {
+            _movementState = MovementState.DRIVE;
+        }
     }
 
     public void OnJumpStarted(InputAction.CallbackContext ctx)
@@ -165,11 +187,10 @@ public class Player : MonoBehaviour
 
     public void OnCapturePerformed(InputAction.CallbackContext ctx)
     {
-        if (_movementState != MovementState.JUMP)
+        if (_movementState == MovementState.DRIVE)
         {
             _movementState = MovementState.CAPTURE;
         }
-        Debug.Log(ctx.ReadValue<float>());
     }
 
     private void OnLanded ()
@@ -201,6 +222,10 @@ public class Player : MonoBehaviour
 
             case MovementState.CAPTURE:
                 _rigidbody.AddForce(inputVelocity/2 * Time.deltaTime, ForceMode2D.Impulse);
+                break;
+
+            case MovementState.STUNNED:
+                _rigidbody.AddForce(inputVelocity / 3 * Time.deltaTime, ForceMode2D.Impulse);
                 break;
 
             default:
