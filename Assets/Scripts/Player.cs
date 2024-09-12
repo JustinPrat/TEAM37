@@ -18,11 +18,14 @@ public class Player : MonoBehaviour
     [SerializeField] private float _repulseAmount;
     [SerializeField] private float _attackDelay;
     [SerializeField] private float _hitDelay;
+    [SerializeField] private float _gravityFactor;
+    [SerializeField] private float _captureSpeedFactor;
+    [SerializeField] private Transform _shadowTransform;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     public Player OtherPlayer { get; set; }
 
+    private float _beforeJumpShadowYPos;
     private float _beforeJumpHeigth;
-    private float _captureValue;
     private bool _canAttack = true;
     private bool _otherInRange;
     private bool _canBeHit = true;
@@ -82,7 +85,9 @@ public class Player : MonoBehaviour
             _canAttack = false;
             Vector2 force = transform.position - otherPosition;
             _rigidbody.AddForce(force.normalized * _repulseAmount, ForceMode2D.Impulse);
-            _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
+            Color baseColor = _spriteRenderer.color;
+            baseColor.a = 0.5f;
+            _spriteRenderer.color = baseColor;
             StartCoroutine(CooldownCoroutine(_hitDelay, OnHitCooldownFinish));
         }
     }
@@ -101,7 +106,6 @@ public class Player : MonoBehaviour
 
     public void OnCaptureCanceled(InputAction.CallbackContext ctx)
     {
-        _captureValue = 0;
         _movementState = MovementState.DRIVE;
     }
 
@@ -111,8 +115,8 @@ public class Player : MonoBehaviour
         {
             _movementState = MovementState.JUMP;
             _beforeJumpHeigth = transform.position.y;
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
-            _rigidbody.AddForce(new Vector2(0, _jumpAmount), ForceMode2D.Impulse);
+            _beforeJumpShadowYPos = _shadowTransform.position.y;
+            _rigidbody.velocity += new Vector2(0, _jumpAmount);
         }
     }
 
@@ -123,7 +127,7 @@ public class Player : MonoBehaviour
 
     public void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
-        if ( _movementState == MovementState.DRIVE && _canAttack == true)
+        if ( _movementState == MovementState.DRIVE && _canAttack)
         {
             if (_otherInRange)
             {
@@ -131,9 +135,11 @@ public class Player : MonoBehaviour
             }
 
             _canAttack = false;
+            _spriteRenderer.color = new Color(1, 0, 0, _spriteRenderer.color.r);
             StartCoroutine(CooldownCoroutine(_attackDelay, OnAttackCooldownFinish));
         }
     }
+
     private IEnumerator CooldownCoroutine (float cooldownTime, Action callBack)
     {
         yield return new WaitForSeconds(cooldownTime);
@@ -144,6 +150,7 @@ public class Player : MonoBehaviour
     private void OnAttackCooldownFinish()
     {
         _canAttack = true;
+        _spriteRenderer.color = new Color(1, 1, 1, _spriteRenderer.color.r);
     }
 
 
@@ -153,7 +160,6 @@ public class Player : MonoBehaviour
         {
             _movementState = MovementState.CAPTURE;
         }
-        Debug.Log(ctx.ReadValue<float>());
     }
 
     private void OnLanded ()
@@ -163,19 +169,18 @@ public class Player : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
-        Vector2 inputVelocity = _movementValue * _speed;
+        Vector3 inputVelocity = _movementValue * _speed;
 
         switch (_movementState)
         {
             case MovementState.DRIVE:
-                _rigidbody.AddForce(inputVelocity * Time.deltaTime, ForceMode2D.Impulse);
+                _rigidbody.MovePosition(transform.position + inputVelocity * Time.fixedDeltaTime);
                 break;
 
             case MovementState.JUMP:
-                _rigidbody.AddForce(new Vector2(0, -9.81f), ForceMode2D.Force);
-                _rigidbody.AddForce(new Vector2(inputVelocity.x * _airControl, 0), ForceMode2D.Impulse);
+                _rigidbody.velocity += new Vector2(_movementValue.x * _airControl, -9.81f * _gravityFactor) * Time.fixedDeltaTime;
 
                 if (transform.position.y < _beforeJumpHeigth)
                 {
@@ -184,7 +189,7 @@ public class Player : MonoBehaviour
                 break;
 
             case MovementState.CAPTURE:
-                _rigidbody.AddForce(inputVelocity/2 * Time.deltaTime, ForceMode2D.Impulse);
+                _rigidbody.MovePosition(transform.position + inputVelocity * _captureSpeedFactor * Time.fixedDeltaTime);
                 break;
 
             default:
