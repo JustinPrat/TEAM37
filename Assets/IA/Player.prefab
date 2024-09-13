@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.914}
+  m_AnchoredPosition: {x: 0, y: 1.775}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6157693623051252639
@@ -129,7 +129,7 @@ Transform:
   m_GameObject: {fileID: 909063734282870383}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.557, y: -0.995, z: 0}
+  m_LocalPosition: {x: -0.557, y: 0.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4958,7 +4958,7 @@ Transform:
   m_GameObject: {fileID: 1822361375886681252}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.102, z: 0}
+  m_LocalPosition: {x: 0, y: -0.027, z: 0}
   m_LocalScale: {x: 7.4100003, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5042,7 +5042,7 @@ Transform:
   m_GameObject: {fileID: 2796364188872499142}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.475, y: -0.654, z: 0}
+  m_LocalPosition: {x: -0.475, y: 0.39, z: 0}
   m_LocalScale: {x: 0.83333325, y: 0.83333325, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5320,7 +5320,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278255410
   m_fontColor: {r: 0.19446743, g: 1, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -5412,7 +5412,7 @@ Transform:
   m_GameObject: {fileID: 8008327375200459477}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.885268, y: -2.73764, z: 0}
+  m_LocalPosition: {x: -4.885268, y: -4.08, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5529,7 +5529,7 @@ MonoBehaviour:
   _captureSpeedFactor: 0.5
   _stunSpeedFactor: 0.3
   _playerCollisionDelay: 0.1
-  _obstacleCollisionDelay: 2
+  _obstacleCollisionDelay: 1.5
   _spriteRenderer: {fileID: 1783201004478433453}
   _circleCollider: {fileID: 9047867848956475253}
   _boxCollider: {fileID: -3655434455826096307}
@@ -5612,7 +5612,7 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.58}
+  m_Offset: {x: 0, y: 0.65}
   serializedVersion: 2
   m_Radius: 0.97
 --- !u!61 &-3655434455826096307
@@ -5647,10 +5647,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.58}
+  m_Offset: {x: 0, y: 0.41}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 2.16, y: 2.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5

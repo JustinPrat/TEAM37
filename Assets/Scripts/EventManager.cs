@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -22,7 +23,13 @@ public class EventManager : MonoBehaviour
     [SerializeField] private ParticleSystem particleSystemWin1WINWIN;
     [SerializeField] private ParticleSystem particleSystemWin2WINWIN;
 
+    [SerializeField] private Image _finishScore;
+    [SerializeField] private TextMeshProUGUI _finishScoreText;
+
     [SerializeField] private Image _fadePart;
+
+    [SerializeField] private Sprite _spriteRED;
+    [SerializeField] private Sprite _spriteGREEN;
 
     private int eventIndex;
     private float spawningTimer;
@@ -88,11 +95,17 @@ public class EventManager : MonoBehaviour
                     if (player1Score > player2Score)
                     {
                         particleSystemWin1WINWIN.Play();
+                        _finishScore.sprite = _spriteGREEN;
+                        _finishScoreText.text = player1Score.ToString("F2");
                     }
                     else
                     {
                         particleSystemWin2WINWIN.Play();
+                        _finishScore.sprite = _spriteRED;
+                        _finishScoreText.text = player2Score.ToString("F2");
                     }
+
+                    _finishScore.gameObject.SetActive(true);
 
                     _fadePart.gameObject.SetActive(true);
                     _fadePart.DOColor(new Color(0, 0, 0, 0.9f), 1);

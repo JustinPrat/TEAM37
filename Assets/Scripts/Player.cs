@@ -134,18 +134,18 @@ public class Player : MonoBehaviour
             _canAttack = false;
             _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
             _movementState = MovementState.STUNNED;
+            _oneTimeScoreText.gameObject.SetActive(false);
+            _playerAnimator.SetBool("isRecording", false);
+            _playerAnimator.SetBool("isJumping", false);
             StartCoroutine(CooldownCoroutine(_obstacleCollisionDelay, OnObstacleCooldownFinish));
+            
             Destroy(collision.gameObject);
         }
         else if (collision.collider.tag != tag && _movementState != MovementState.JUMP && _canBeHit == true) 
         {
-            _canBeHit = false;
-            _canAttack = false;
             Vector2 force = transform.position - collision.transform.position;
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.AddForce(force.normalized * _repulseAmountPlayerCollision, ForceMode2D.Impulse);
-            _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
-            StartCoroutine(CooldownCoroutine(_playerCollisionDelay, OnHitCooldownFinish));
 
             _hitParticleSystem.Play();
             _hitParticleSystem.transform.position = collision.GetContact(0).point;
@@ -155,7 +155,7 @@ public class Player : MonoBehaviour
     }
 
 
-    public void HitPlayer (Vector3 otherPosition)
+    public void GetHitPlayer (Vector3 otherPosition)
     {
         if (_canBeHit && _movementState != MovementState.JUMP)
         {
@@ -230,11 +230,10 @@ public class Player : MonoBehaviour
         {
             if (_otherInRange)
             {
-                OtherPlayer.HitPlayer(transform.position);
+                OtherPlayer.GetHitPlayer(transform.position);
             }
 
             _canAttack = false;
-            _spriteRenderer.color = new Color(1, 0, 0, _spriteRenderer.color.r);
             StartCoroutine(CooldownCoroutine(_attackDelay, OnAttackCooldownFinish));
             _playerAnimator.SetTrigger("attack");
         }
