@@ -5321,7 +5321,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0.19446743, g: 1, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5520,7 +5520,7 @@ MonoBehaviour:
   _jumpAmount: 15
   _maxSpeed: 2
   _airControl: 30
-  _repulseAmountAttack: 10
+  _repulseAmountAttack: 30
   _repulseAmountPlayerCollision: 0.8
   _repulseAmountObstacleCollision: 2
   _attackDelay: 0.5
@@ -5612,9 +5612,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.56}
+  m_Offset: {x: 0, y: -0.58}
   serializedVersion: 2
-  m_Radius: 0.81
+  m_Radius: 0.97
 --- !u!61 &-3655434455826096307
 BoxCollider2D:
   m_ObjectHideFlags: 0
