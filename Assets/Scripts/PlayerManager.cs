@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private List<SpriteRenderer> _loupioteList;
 
     [SerializeField] private List<MonoBehaviour> scriptsToStart;
+    [SerializeField] private EventManager _eventManager;
 
     private List<PlayerInput> _inputList = new List<PlayerInput>();
     private int _controllerIndex;
@@ -41,6 +42,12 @@ public class PlayerManager : MonoBehaviour
             firstPlayer.enabled = true;
             secondPlayer.enabled = true;
 
+            firstPlayer.IsPlayer1 = true;
+            secondPlayer.IsPlayer1 = false;
+
+            firstPlayer.PointEventManager = _eventManager;
+            secondPlayer.PointEventManager = _eventManager;
+
             firstPlayer.OtherPlayer = secondPlayer;
             secondPlayer.OtherPlayer = firstPlayer;
 
@@ -52,16 +59,16 @@ public class PlayerManager : MonoBehaviour
 
             secondPlayer.PlayerAnimator.SetTrigger("secondPlayer");
 
-            foreach (MonoBehaviour script in scriptsToStart)
-            {
-                script.enabled = true;
-            }
+            StopScripts(true);
         }
     }
 
-    void Update()
+    public void StopScripts (bool isEnabled)
     {
-        
+        foreach (MonoBehaviour script in scriptsToStart)
+        {
+            script.enabled = isEnabled;
+        }
     }
 
     

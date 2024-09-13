@@ -45,6 +45,10 @@ public class Player : MonoBehaviour
     public Player OtherPlayer { get; set; }
     public Animator PlayerAnimator => _playerAnimator;
 
+    public bool IsPlayer1 { get; set; }
+
+    public EventManager PointEventManager { get; set; }
+
     private float _beforeJumpHeigth;
     private bool _canAttack = true;
     private bool _otherInRange;
@@ -97,15 +101,7 @@ public class Player : MonoBehaviour
         {
             _otherInRange = true;
         }
-        if (collider.tag == "obstacle" && _movementState != MovementState.JUMP && _canBeHit == true)
-        {
-            _canBeHit = false;
-            _canAttack = false;
-            _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
-            _movementState = MovementState.STUNNED;
-            StartCoroutine(CooldownCoroutine(_obstacleCollisionDelay, OnObstacleCooldownFinish));
 
-        }
         if (collider.tag == "Zone")
         {
             _isInZone = true;
@@ -131,7 +127,17 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag != tag && _movementState != MovementState.JUMP && _canBeHit == true) 
+
+        if (collision.collider.tag == "obstacle" && _movementState != MovementState.JUMP && _canBeHit == true)
+        {
+            _canBeHit = false;
+            _canAttack = false;
+            _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
+            _movementState = MovementState.STUNNED;
+            StartCoroutine(CooldownCoroutine(_obstacleCollisionDelay, OnObstacleCooldownFinish));
+            Destroy(collision.gameObject);
+        }
+        else if (collision.collider.tag != tag && _movementState != MovementState.JUMP && _canBeHit == true) 
         {
             _canBeHit = false;
             _canAttack = false;
@@ -194,8 +200,9 @@ public class Player : MonoBehaviour
         {
             _movementState = MovementState.DRIVE;
             _oneTimeScoreText.gameObject.SetActive(false);
-            _playerAnimator.SetBool("isRecording", false);
         }
+
+        _playerAnimator.SetBool("isRecording", false);
     }
 
     public void OnJumpStarted(InputAction.CallbackContext ctx)
@@ -305,6 +312,8 @@ public class Player : MonoBehaviour
                     _score += Time.deltaTime * _baseScoreGain;
                     TextMeshProObject.text = _score.ToString("F2");
                     TextMeshProObject.transform.DOShakeScale(Time.fixedDeltaTime,0.1f, 1);
+
+                    PointEventManager.ReportScore(Time.deltaTime * _baseScoreGain, IsPlayer1);
 
                     Loupiote.color = new Color(0.9f, 0, 0, Mathf.Abs(Mathf.Sin(Time.time * 2)));
                 }
