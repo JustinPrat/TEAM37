@@ -926,10 +926,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 659789071}
-  - component: {fileID: 659789070}
   - component: {fileID: 659789069}
+  - component: {fileID: 659789072}
   m_Layer: 0
-  m_Name: NotMoving (1)
+  m_Name: Turtle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -976,7 +976,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d1d893261e0b53046b090041f567b6f5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4553ba01adb11f449baaf742ebd49327, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -987,21 +987,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &659789070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 659789068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ae2c7033788050479a287d9e4249e89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  zoneSize: 2
-  eventDuration: 10
-  spawnOffset: 7
 --- !u!4 &659789071
 Transform:
   m_ObjectHideFlags: 0
@@ -1011,12 +996,27 @@ Transform:
   m_GameObject: {fileID: 659789068}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 7.66, y: 1.61, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &659789072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659789068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f8ce9e1d805f8240b87e98a24858489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zoneSize: 2.5
+  eventDuration: 25
+  spawnOffset: 12
 --- !u!1 &730813372
 GameObject:
   m_ObjectHideFlags: 0
@@ -1195,7 +1195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 957104512}
   - component: {fileID: 957104514}
-  - component: {fileID: 957104513}
+  - component: {fileID: 957104515}
   m_Layer: 0
   m_Name: SuperMan
   m_TagString: Untagged
@@ -1212,27 +1212,12 @@ Transform:
   m_GameObject: {fileID: 957104511}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.63, z: 0}
+  m_LocalPosition: {x: -1.6, y: 2.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &957104513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 957104511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f8ce9e1d805f8240b87e98a24858489, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  zoneSize: 3
-  eventDuration: 8
-  spawnOffset: 12
 --- !u!212 &957104514
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1274,7 +1259,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 167e9bb0cb4b8c54d9bce082d91f9c0c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9cc3b140b01cf4741babb4a9de316eec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1285,6 +1270,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &957104515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957104511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ae2c7033788050479a287d9e4249e89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zoneSize: 2.5
+  eventDuration: 25
+  spawnOffset: 5
 --- !u!1 &1016947503
 GameObject:
   m_ObjectHideFlags: 0
@@ -1294,10 +1294,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1016947505}
-  - component: {fileID: 1016947506}
   - component: {fileID: 1016947504}
+  - component: {fileID: 1016947506}
   m_Layer: 0
-  m_Name: NotMoving
+  m_Name: Ghost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1344,7 +1344,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d1d893261e0b53046b090041f567b6f5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a30bd27c3f34e7d4bb3308493c60ab90, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1364,7 +1364,7 @@ Transform:
   m_GameObject: {fileID: 1016947503}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: -4.43, y: 0.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1379,12 +1379,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1016947503}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ae2c7033788050479a287d9e4249e89, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f8ce9e1d805f8240b87e98a24858489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneSize: 2
-  eventDuration: 10
-  spawnOffset: -3
+  zoneSize: 2.5
+  eventDuration: 25
+  spawnOffset: -12
 --- !u!1 &1058373898
 GameObject:
   m_ObjectHideFlags: 0
@@ -1611,12 +1611,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7facbb1202180849b5e6d861bbddc6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawningDelay: 5
+  spawningDelay: 15
   spawnEvents:
-  - {fileID: 957104513}
-  - {fileID: 1167300311}
+  - {fileID: 957104515}
+  - {fileID: 1255996662}
+  - {fileID: 1167300314}
   - {fileID: 1016947506}
-  - {fileID: 659789070}
+  - {fileID: 659789072}
   zoneRecord: {fileID: 1358086099}
   zoneRecordCollider: {fileID: 1358086101}
 --- !u!1 &1167300310
@@ -1628,30 +1629,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1167300312}
-  - component: {fileID: 1167300311}
   - component: {fileID: 1167300313}
+  - component: {fileID: 1167300314}
   m_Layer: 0
-  m_Name: SuperMan (1)
+  m_Name: Shark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &1167300311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1167300310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f8ce9e1d805f8240b87e98a24858489, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  zoneSize: 3
-  eventDuration: 8
-  spawnOffset: -12
 --- !u!4 &1167300312
 Transform:
   m_ObjectHideFlags: 0
@@ -1660,13 +1646,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1167300310}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.14, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: -0.42261827, w: 0.9063079}
+  m_LocalPosition: {x: 4.25, y: 0.89, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -50}
 --- !u!212 &1167300313
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1708,7 +1694,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 167e9bb0cb4b8c54d9bce082d91f9c0c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a8ce0113726fee644beabacc03b218eb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1719,6 +1705,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1167300314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167300310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ae2c7033788050479a287d9e4249e89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zoneSize: 2.5
+  eventDuration: 25
+  spawnOffset: 5
 --- !u!1 &1172143503
 GameObject:
   m_ObjectHideFlags: 0
@@ -1864,9 +1865,8 @@ GameObject:
   - component: {fileID: 1255996664}
   - component: {fileID: 1255996663}
   - component: {fileID: 1255996662}
-  - component: {fileID: 1255996665}
   m_Layer: 0
-  m_Name: SuperMan (2)
+  m_Name: BurningMan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1884,9 +1884,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8ce9e1d805f8240b87e98a24858489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneSize: 3
-  eventDuration: 8
-  spawnOffset: 12
+  zoneSize: 2.5
+  eventDuration: 25
+  spawnOffset: -12
 --- !u!212 &1255996663
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1928,7 +1928,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 167e9bb0cb4b8c54d9bce082d91f9c0c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4734eecd43cf2ee43a71a3e7d8ef137c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1948,27 +1948,12 @@ Transform:
   m_GameObject: {fileID: 1255996661}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.63, z: 0}
+  m_LocalPosition: {x: 0.03, y: 0.79, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1255996665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1255996661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ae2c7033788050479a287d9e4249e89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  zoneSize: 0
-  eventDuration: 0
-  spawnOffset: 5
 --- !u!1 &1358086098
 GameObject:
   m_ObjectHideFlags: 0
