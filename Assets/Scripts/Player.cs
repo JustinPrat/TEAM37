@@ -229,6 +229,7 @@ public class Player : MonoBehaviour
             _canAttack = false;
             _spriteRenderer.color = new Color(1, 0, 0, _spriteRenderer.color.r);
             StartCoroutine(CooldownCoroutine(_attackDelay, OnAttackCooldownFinish));
+            _playerAnimator.SetTrigger("attack");
         }
     }
 
