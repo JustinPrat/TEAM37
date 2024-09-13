@@ -28,8 +28,22 @@ public class Player : MonoBehaviour
 
     [SerializeField] private int _baseScoreGain;
     [SerializeField] private int _timeBeforeUpgrade;
+<<<<<<< Updated upstream
    
     public TextMeshProUGUI TextMeshProUGUI { get; set; }
+=======
+    [SerializeField] private CinemachineImpulseSource _impulseSource;
+
+    [SerializeField] private TextMeshProUGUI _oneTimeScoreText;
+    [SerializeField] private ParticleSystem particleCloud;
+
+    [SerializeField] private Transform _shadow;
+
+    public float OneTimeScore => _oneTimeScore;
+
+
+    public TextMeshProUGUI TextMeshProObject { get; set; }
+>>>>>>> Stashed changes
     public SpriteRenderer Loupiote { get; set; }
     public Player OtherPlayer { get; set; }
 
