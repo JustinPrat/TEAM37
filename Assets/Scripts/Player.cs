@@ -1,9 +1,8 @@
+using Cinemachine;
+using DG.Tweening;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using TreeEditor;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -27,14 +26,24 @@ public class Player : MonoBehaviour
     [SerializeField] private float _playerCollisionDelay;
     [SerializeField] private float _obstacleCollisionDelay;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private SpriteRenderer _loupiote;
+    [SerializeField] private Collider2D _circleCollider;
+    [SerializeField] private Collider2D _boxCollider;
+    [SerializeField] private ParticleSystem _hitParticleSystem;
+    [SerializeField] private Animator _playerAnimator;
 
     [SerializeField] private int _baseScoreGain;
     [SerializeField] private int _timeBeforeUpgrade;
+    [SerializeField] private CinemachineImpulseSource _impulseSource;
+
+    [SerializeField] private TextMeshProUGUI _oneTimeScoreText;
+    [SerializeField] private ParticleSystem particleCloud;
+
+    [SerializeField] private Transform _shadow;
    
-    public TextMeshProUGUI TextMeshProUGUI { get; set; }
+    public TextMeshProUGUI TextMeshProObject { get; set; }
     public SpriteRenderer Loupiote { get; set; }
     public Player OtherPlayer { get; set; }
+    public Animator PlayerAnimator => _playerAnimator;
 
     private float _beforeJumpHeigth;
     private bool _canAttack = true;
@@ -42,7 +51,10 @@ public class Player : MonoBehaviour
     private bool _canBeHit = true;
     private bool _isInZone = false;
 
+    private float _oneTimeScore;
+
     private float _score;
+    private float _baseShadowHeigth;
 
     [SerializeField] private PlayerInput _playerInput;
 
@@ -62,6 +74,9 @@ public class Player : MonoBehaviour
         _playerInput.actions["Capture"].performed += OnCapturePerformed;
         _playerInput.actions["Capture"].canceled += OnCaptureCanceled;
         _playerInput.actions["Attack"].performed += OnAttackPerformed;
+
+        particleCloud.Play();
+        _baseShadowHeigth = _shadow.localPosition.y;
     }
 
 
@@ -94,6 +109,11 @@ public class Player : MonoBehaviour
         if (collider.tag == "Zone")
         {
             _isInZone = true;
+            _oneTimeScore = 0;
+            if (_movementState == MovementState.CAPTURE)
+            {
+                _oneTimeScoreText.gameObject.SetActive(true);
+            }
         }
     }
     private void OnTriggerExit2D(Collider2D collider)
@@ -105,6 +125,7 @@ public class Player : MonoBehaviour
         if (collider.tag == "Zone")
         {
             _isInZone = false;
+            _oneTimeScoreText.gameObject.SetActive(false);
         }
     }
 
@@ -119,6 +140,11 @@ public class Player : MonoBehaviour
             _rigidbody.AddForce(force.normalized * _repulseAmountPlayerCollision, ForceMode2D.Impulse);
             _spriteRenderer.color = new Color(1, 1, 1, 0.5f);
             StartCoroutine(CooldownCoroutine(_playerCollisionDelay, OnHitCooldownFinish));
+
+            _hitParticleSystem.Play();
+            _hitParticleSystem.transform.position = collision.GetContact(0).point;
+
+            _impulseSource.GenerateImpulse(0.15f);
         }
     }
 
@@ -135,9 +161,10 @@ public class Player : MonoBehaviour
             _spriteRenderer.color = baseColor;
 
             Vector2 force = transform.position - otherPosition;
-            //_rigidbody.AddForce(force.normalized * _repulseAmountAttack, ForceMode2D.Impulse);
             _rigidbody.velocity += force.normalized * _repulseAmountAttack;
             StartCoroutine(CooldownCoroutine(_hitDelay, OnHitCooldownFinish));
+
+            _impulseSource.GenerateImpulse(0.25f);
         }
     }
 
@@ -166,6 +193,8 @@ public class Player : MonoBehaviour
         if ( _movementState == MovementState.CAPTURE)
         {
             _movementState = MovementState.DRIVE;
+            _oneTimeScoreText.gameObject.SetActive(false);
+            _playerAnimator.SetBool("isRecording", false);
         }
     }
 
@@ -176,6 +205,10 @@ public class Player : MonoBehaviour
             _movementState = MovementState.JUMP;
             _beforeJumpHeigth = transform.position.y;
             _rigidbody.velocity += new Vector2(0, _jumpAmount);
+            _circleCollider.enabled = false;
+            _boxCollider.enabled = false;
+            _playerAnimator.SetBool("isJumping", true);
+            _shadow.parent = null;
         }
     }
 
@@ -196,6 +229,7 @@ public class Player : MonoBehaviour
             _canAttack = false;
             _spriteRenderer.color = new Color(1, 0, 0, _spriteRenderer.color.r);
             StartCoroutine(CooldownCoroutine(_attackDelay, OnAttackCooldownFinish));
+            _playerAnimator.SetTrigger("attack");
         }
     }
 
@@ -218,6 +252,12 @@ public class Player : MonoBehaviour
         if (_movementState == MovementState.DRIVE)
         {
             _movementState = MovementState.CAPTURE;
+            _playerAnimator.SetBool("isRecording", true);
+
+            if (_isInZone)
+            {
+                _oneTimeScoreText.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -225,6 +265,13 @@ public class Player : MonoBehaviour
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
         _movementState = MovementState.DRIVE;
+        _circleCollider.enabled = true;
+        _boxCollider.enabled = true;
+
+        _playerAnimator.SetBool("isJumping", false);
+
+        _shadow.SetParent(transform);
+        _shadow.localPosition = Vector3.up * _baseShadowHeigth;
     }
 
     void FixedUpdate()
@@ -239,7 +286,9 @@ public class Player : MonoBehaviour
                 
             case MovementState.JUMP:
                 _rigidbody.velocity += new Vector2(_movementValue.x * _airControl, -9.81f * _gravityFactor) * Time.fixedDeltaTime;
-                if (transform.position.y < _beforeJumpHeigth)
+                _shadow.position = new Vector3(transform.position.x, _shadow.position.y, 0);
+
+                if (transform.position.y < _beforeJumpHeigth && _rigidbody.velocity.y < 0)
                 {
                     OnLanded();
                 }
@@ -249,8 +298,14 @@ public class Player : MonoBehaviour
                 _rigidbody.velocity += (Vector2)(inputVelocity * _captureSpeedFactor * Time.fixedDeltaTime);
                 if (_isInZone && _canBeHit)
                 {
+                    _oneTimeScore += Time.deltaTime * _baseScoreGain;
+                    _oneTimeScoreText.text = _oneTimeScore.ToString("F2");
+                    _oneTimeScoreText.transform.DOShakeScale(Time.fixedDeltaTime, 0.2f, 2);
+
                     _score += Time.deltaTime * _baseScoreGain;
-                    TextMeshProUGUI.text = _score.ToString();
+                    TextMeshProObject.text = _score.ToString("F2");
+                    TextMeshProObject.transform.DOShakeScale(Time.fixedDeltaTime,0.1f, 1);
+
                     Loupiote.color = new Color(0.9f, 0, 0, Mathf.Abs(Mathf.Sin(Time.time * 2)));
                 }
                 break;
