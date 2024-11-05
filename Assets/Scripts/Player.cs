@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
     [SerializeField] private ParticleSystem particleCloud;
 
     [SerializeField] private Transform _shadow;
+    [SerializeField] private ParticleSystem _cloudOnLand;
    
     public TextMeshProUGUI TextMeshProObject { get; set; }
     public SpriteRenderer Loupiote { get; set; }
@@ -278,6 +279,8 @@ public class Player : MonoBehaviour
 
         _shadow.SetParent(transform);
         _shadow.localPosition = Vector3.up * _baseShadowHeigth;
+
+        _cloudOnLand.Play();
     }
 
     void FixedUpdate()
